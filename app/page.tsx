@@ -1,4 +1,4 @@
-import { Calculator, RefreshCcw, Wallet } from 'lucide-react'
+import { Calculator, Phone, RefreshCcw, Wallet } from 'lucide-react'
 
 const LEGAL_LINKS = {
   joinAgreement: '/docs/join-agreement.pdf',
@@ -10,16 +10,13 @@ const LEGAL_LINKS = {
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-background text-foreground">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-12 px-4 py-10 sm:px-6 sm:py-14">
+      <div className="flex w-full flex-col gap-12 px-4 py-10 sm:px-6 sm:py-14">
         <section className="flex flex-col gap-8">
           <div className="flex flex-col gap-4">
             <p className="text-sm font-medium tracking-wide text-muted-foreground">Фулфилмент · B2B логистика</p>
             <h1 className="text-balance text-3xl font-semibold leading-tight text-foreground sm:text-4xl">
               Почему именно наш сервис?
             </h1>
-            <p className="max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Создайте мощный визуальный акцент на преимуществах.
-            </p>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -161,7 +158,19 @@ export default function HomePage() {
         <footer className="rounded-xl border bg-card shadow-sm">
           <div className="h-2 w-full rounded-t-xl bg-primary" />
           <div className="flex flex-col gap-3 px-5 py-6 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-foreground/80">© {new Date().getFullYear()} Fulfillment. Все права защищены.</p>
+            <div className="flex flex-col gap-1">
+              <p className="text-foreground/80">© {new Date().getFullYear()} Fulfillment. Все права защищены.</p>
+              <p className="flex flex-wrap items-center gap-2">
+                Контакты:{' '}
+                <a
+                  href="tel:+74956400102"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-3 py-1.5 font-semibold text-primary-foreground shadow-sm transition hover:opacity-90"
+                >
+                  <Phone className="size-4" aria-hidden="true" />
+                  +7 (495) 640-01-02
+                </a>
+              </p>
+            </div>
             <nav className="flex flex-wrap gap-x-3 gap-y-2">
               <a
                 href={LEGAL_LINKS.joinAgreement}
