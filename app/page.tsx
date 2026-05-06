@@ -168,12 +168,26 @@ export default function HomePage() {
               />
             </div>
 
-            <div className="relative w-full max-w-md justify-self-center overflow-hidden rounded-3xl border border-white/35 bg-white shadow-[0_24px_60px_rgba(0,0,0,0.18)]">
-              <div className="h-2 w-full bg-[linear-gradient(90deg,#E4003C_0%,#E4003C_34%,#252064_34%,#252064_100%)]" />
-              <div className="p-6">
-              <div className="mb-5 flex flex-col gap-2">
-                <h2 className="text-xl font-black text-[#252064]">Вход в личный кабинет</h2>
-                <p className="text-sm text-[#252064]/70">Авторизация происходит на защищённой странице сервиса.</p>
+            <div className="relative w-full max-w-md justify-self-center rounded-2xl border border-slate-200 bg-white p-6 text-slate-950 shadow-[0_24px_60px_rgba(15,23,42,0.18)] sm:p-8">
+              <div className="mb-6">
+                <p className="mb-2 text-sm font-medium text-slate-700">Режим устройства</p>
+                <div className="grid grid-cols-2 rounded-lg bg-slate-100 p-1 text-sm font-medium">
+                  <button
+                    type="button"
+                    className="h-9 rounded-md bg-white text-slate-950 shadow-sm"
+                    aria-pressed="true"
+                  >
+                    Компьютер
+                  </button>
+                  <button type="button" className="h-9 rounded-md text-slate-600 transition hover:text-slate-950">
+                    Телефон
+                  </button>
+                </div>
+              </div>
+
+              <div className="mb-6 text-center">
+                <h2 className="text-2xl font-bold tracking-tight text-slate-950">Вход в систему</h2>
+                <p className="mt-2 text-sm text-slate-500">Введите ваши данные</p>
               </div>
 
               <form
@@ -182,8 +196,8 @@ export default function HomePage() {
                 className="flex flex-col gap-4"
               >
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="username" className="text-sm font-medium">
-                    Username / Email
+                  <label htmlFor="username" className="text-sm font-medium text-slate-900">
+                    Телефон или Email
                   </label>
                   <input
                     id="username"
@@ -191,102 +205,111 @@ export default function HomePage() {
                     type="text"
                     required
                     autoComplete="username"
-                    className="h-11 w-full rounded-xl border border-[#252064]/20 bg-white px-3 text-sm shadow-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E4003C]/35"
+                    className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-950 shadow-xs transition placeholder:text-slate-400 focus-visible:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950/10"
                   />
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="password" className="text-sm font-medium">
-                    Password
-                  </label>
+                  <div className="flex items-center justify-between gap-3">
+                    <label htmlFor="password" className="text-sm font-medium text-slate-900">
+                      Пароль
+                    </label>
+                    <a
+                      href="https://fulfillment-web-production.up.railway.app/forgot-password"
+                      className="text-sm font-medium text-slate-600 underline-offset-4 transition hover:text-slate-950 hover:underline"
+                    >
+                      Забыли пароль?
+                    </a>
+                  </div>
                   <input
                     id="password"
                     name="password"
                     type="password"
                     required
                     autoComplete="current-password"
-                    className="h-11 w-full rounded-xl border border-[#252064]/20 bg-white px-3 text-sm shadow-xs transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E4003C]/35"
+                    className="h-10 w-full rounded-md border border-slate-200 bg-white px-3 text-sm text-slate-950 shadow-xs transition placeholder:text-slate-400 focus-visible:border-slate-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-950/10"
                   />
                 </div>
 
-                <fieldset className="mt-1 flex flex-col gap-3">
+                <fieldset className="flex flex-col gap-3">
                   <legend className="sr-only">Юридические согласия</legend>
 
-                  <label className="flex items-start gap-3 text-sm leading-relaxed text-[#252064]">
+                  <label className="flex items-start gap-3 text-xs leading-relaxed text-slate-700">
                     <input
                       name="accept_join_terms"
                       type="checkbox"
                       required
-                      className="mt-1 size-4 rounded border border-[#252064]/20 text-[#E4003C] accent-[#E4003C]"
+                      className="mt-0.5 size-4 shrink-0 rounded border-slate-300 accent-slate-950"
                     />
                     <span>
                       Я принимаю условия и тарифы присоединения к фулфилменту{' '}
-                      <span className="text-[#252064]/60">
-                        (
-                        <a
-                          href={LEGAL_LINKS.joinAgreement}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#252064] underline underline-offset-4 transition hover:text-[#E4003C]"
-                        >
-                          Соглашение о присоединении
-                        </a>
-                        {' · '}
-                        <a
-                          href={LEGAL_LINKS.fulfillmentServicesAgreement}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#252064] underline underline-offset-4 transition hover:text-[#E4003C]"
-                        >
-                          Договор оказания услуг фулфилмента
-                        </a>
-                        )
-                      </span>
+                      <a
+                        href={LEGAL_LINKS.joinAgreement}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-slate-950 underline underline-offset-4 transition hover:text-slate-700"
+                      >
+                        Соглашение о присоединении
+                      </a>
+                      {' и '}
+                      <a
+                        href={LEGAL_LINKS.fulfillmentServicesAgreement}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-slate-950 underline underline-offset-4 transition hover:text-slate-700"
+                      >
+                        Договор оказания услуг фулфилмента
+                      </a>
                     </span>
                   </label>
 
-                  <label className="flex items-start gap-3 text-sm leading-relaxed text-[#252064]">
+                  <label className="flex items-start gap-3 text-xs leading-relaxed text-slate-700">
                     <input
                       name="accept_personal_data"
                       type="checkbox"
                       required
-                      className="mt-1 size-4 rounded border border-[#252064]/20 text-[#E4003C] accent-[#E4003C]"
+                      className="mt-0.5 size-4 shrink-0 rounded border-slate-300 accent-slate-950"
                     />
                     <span>
                       Я принимаю соглашение на обработку персональных данных согласно политике конфиденциальности{' '}
-                      <span className="text-[#252064]/60">
-                        (
-                        <a
-                          href={LEGAL_LINKS.personalDataConsent}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#252064] underline underline-offset-4 transition hover:text-[#E4003C]"
-                        >
-                          Согласие на обработку персональных данных
-                        </a>
-                        {' · '}
-                        <a
-                          href={LEGAL_LINKS.personalDataPolicy}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#252064] underline underline-offset-4 transition hover:text-[#E4003C]"
-                        >
-                          Политика в отношении обработки персональных данных
-                        </a>
-                        )
-                      </span>
+                      <a
+                        href={LEGAL_LINKS.personalDataConsent}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-slate-950 underline underline-offset-4 transition hover:text-slate-700"
+                      >
+                        Согласие на обработку персональных данных
+                      </a>
+                      {' и '}
+                      <a
+                        href={LEGAL_LINKS.personalDataPolicy}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-medium text-slate-950 underline underline-offset-4 transition hover:text-slate-700"
+                      >
+                        Политика в отношении обработки персональных данных
+                      </a>
                     </span>
                   </label>
                 </fieldset>
 
                 <button
                   type="submit"
-                  className="mt-2 inline-flex h-11 w-full items-center justify-center rounded-full bg-[#E4003C] px-4 text-sm font-bold text-white shadow-[0_10px_20px_rgba(228,0,60,0.24)] transition hover:bg-[#252064] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E4003C]/35 active:opacity-90"
+                  className="mt-2 inline-flex h-10 w-full items-center justify-center rounded-md bg-[#E4003C] px-4 text-sm font-medium text-white shadow-sm transition hover:bg-[#c90035] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E4003C]/30 active:opacity-90"
                 >
-                  Login
+                  Войти
                 </button>
               </form>
-              </div>
+
+              <p className="mt-6 text-center text-sm text-slate-600">
+                Нет аккаунта?{' '}
+                <a
+                  href="https://fulfillment-web-production.up.railway.app/register"
+                  className="font-medium text-slate-950 underline-offset-4 transition hover:underline"
+                >
+                  Зарегистрироваться
+                </a>
+              </p>
             </div>
           </div>
         </section>
