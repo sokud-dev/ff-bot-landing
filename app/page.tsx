@@ -134,20 +134,29 @@ export default function HomePage() {
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
               icon={<Calculator className="size-5" aria-hidden="true" />}
+              illustration="calculator"
               title="Быстрый расчет стоимости фулфилмента для вашего бизнеса. Без менеджера и ожидания"
             />
             <FeatureCard
               icon={<RefreshCcw className="size-5" aria-hidden="true" />}
+              illustration="cycle"
               title="Полный цикл в одном окне: от оформления заявки до отслеживания груза"
             />
             <FeatureCard
               icon={<Wallet className="size-5" aria-hidden="true" />}
+              illustration="payment"
               title="Автопополнение баланса с онлайн-кассой — настрой лимит, плати доставку автоматически, без простоев в логистике"
             />
           </div>
         </section>
 
-        <section id="login" className="flex flex-col items-center gap-6">
+        <section
+          id="login"
+          className="flex flex-col items-center gap-6 rounded-[2rem] bg-white p-6 shadow-[0_18px_50px_rgba(37,32,100,0.1)] sm:p-8"
+        >
+          <h2 className="text-center text-3xl font-black tracking-tight text-[#252064] sm:text-5xl">
+            Оформи заявку прямо сейчас!
+          </h2>
           <div className="w-full max-w-md overflow-hidden rounded-3xl border border-[#252064]/15 bg-white shadow-[0_18px_50px_rgba(37,32,100,0.12)]">
             <div className="h-2 w-full bg-[linear-gradient(90deg,#E4003C_0%,#E4003C_34%,#252064_34%,#252064_100%)]" />
             <div className="p-6">
@@ -325,14 +334,82 @@ export default function HomePage() {
   )
 }
 
-function FeatureCard({ icon, title }: { icon: React.ReactNode; title: string }) {
+function FeatureCard({
+  icon,
+  illustration,
+  title,
+}: {
+  icon: React.ReactNode
+  illustration: 'calculator' | 'cycle' | 'payment'
+  title: string
+}) {
   return (
-    <div className="group relative overflow-hidden rounded-3xl border border-[#252064]/15 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+    <div className="group relative min-h-[270px] overflow-hidden rounded-3xl border border-[#252064]/15 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
+      <div className="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_20%_20%,rgba(228,0,60,0.16),transparent_34%),linear-gradient(135deg,rgba(37,32,100,0.08),rgba(228,0,60,0.06))]" aria-hidden="true" />
       <div className="absolute right-0 top-0 h-full w-2 bg-[#E4003C]" aria-hidden="true" />
-      <div className="mb-4 inline-flex size-11 items-center justify-center rounded-2xl bg-[#E4003C]/10 text-[#E4003C] transition group-hover:bg-[#E4003C] group-hover:text-white">
-        {icon}
+      <div className="relative mb-5 flex items-start justify-between gap-4">
+        <div className="inline-flex size-11 items-center justify-center rounded-2xl bg-[#E4003C]/10 text-[#E4003C] transition group-hover:bg-[#E4003C] group-hover:text-white">
+          {icon}
+        </div>
+        <FeatureIllustration type={illustration} />
       </div>
-      <p className="pr-3 text-pretty text-lg font-semibold leading-relaxed text-[#252064]/80">{title}</p>
+      <p className="relative pr-3 text-pretty text-lg font-semibold leading-relaxed text-[#252064]/80">{title}</p>
+    </div>
+  )
+}
+
+function FeatureIllustration({ type }: { type: 'calculator' | 'cycle' | 'payment' }) {
+  if (type === 'calculator') {
+    return (
+      <div className="relative h-24 w-28 shrink-0 rounded-[1.4rem] bg-[#252064] p-3 text-white shadow-[0_14px_28px_rgba(37,32,100,0.18)]">
+        <div className="mb-3 flex items-center justify-between">
+          <span className="h-2 w-12 rounded-full bg-white/80" />
+          <Calculator className="size-4 text-[#E4003C]" aria-hidden="true" />
+        </div>
+        <div className="grid grid-cols-3 gap-1.5">
+          {Array.from({ length: 9 }).map((_, index) => (
+            <span
+              key={index}
+              className={index === 8 ? 'h-4 rounded bg-[#E4003C]' : 'h-4 rounded bg-white/20'}
+              aria-hidden="true"
+            />
+          ))}
+        </div>
+        <div className="absolute -bottom-3 -left-3 rounded-2xl bg-white px-3 py-2 text-xs font-black text-[#E4003C] shadow-md">
+          ₽ 0
+        </div>
+      </div>
+    )
+  }
+
+  if (type === 'cycle') {
+    return (
+      <div className="relative h-24 w-28 shrink-0 rounded-[1.4rem] border border-[#252064]/10 bg-white p-3 shadow-[0_14px_28px_rgba(37,32,100,0.12)]">
+        <div className="absolute inset-4 rounded-full border-2 border-dashed border-[#252064]/25" aria-hidden="true" />
+        <div className="absolute left-3 top-4 flex size-9 items-center justify-center rounded-2xl bg-[#E4003C] text-white shadow-sm">
+          <PackageCheck className="size-5" aria-hidden="true" />
+        </div>
+        <div className="absolute bottom-4 right-3 flex size-9 items-center justify-center rounded-2xl bg-[#252064] text-white shadow-sm">
+          <Truck className="size-5" aria-hidden="true" />
+        </div>
+        <RefreshCcw className="absolute right-4 top-3 size-5 text-[#E4003C]" aria-hidden="true" />
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative h-24 w-28 shrink-0 rounded-[1.4rem] bg-[#E4003C] p-3 text-white shadow-[0_14px_28px_rgba(228,0,60,0.2)]">
+      <div className="mb-3 flex items-center justify-between">
+        <Wallet className="size-5" aria-hidden="true" />
+        <span className="rounded-full bg-white/20 px-2 py-1 text-[10px] font-black uppercase tracking-wider">auto</span>
+      </div>
+      <div className="space-y-2">
+        <span className="block h-2 w-16 rounded-full bg-white/80" />
+        <span className="block h-2 w-20 rounded-full bg-white/35" />
+      </div>
+      <div className="absolute -bottom-3 -right-3 flex size-10 items-center justify-center rounded-2xl bg-white text-[#252064] shadow-md">
+        <RefreshCcw className="size-5" aria-hidden="true" />
+      </div>
     </div>
   )
 }
