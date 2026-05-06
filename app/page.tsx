@@ -19,10 +19,10 @@ import wildberriesLogo from '../png-wildberries-logotip-png-1.png'
 import yandexMarketLogo from '../ямаркет.jpeg'
 
 const LEGAL_LINKS = {
-  joinAgreement: '/docs/join-agreement.pdf',
-  fulfillmentServicesAgreement: '/docs/fulfillment-services-agreement.pdf',
-  personalDataConsent: '/docs/personal-data-consent.pdf',
-  personalDataPolicy: '/docs/personal-data-policy.pdf',
+  joinAgreement: '/documents/ПЭК_Соглашение о присоединении к договору оказания услуг Фулфилмента.docx',
+  fulfillmentServicesAgreement: '/documents/Договор присоединения_фулфилмент.docx',
+  personalDataConsent: '/documents/Согласие на обработку персональных данных Пользователя веб-сервисов.docx',
+  personalDataPolicy: '/documents/Политика_обработки_персональных_данных_v8.docx',
 } as const
 
 const MARKETPLACES = ['Wildberries', 'Ozon', 'Яндекс Маркет'] as const
