@@ -56,7 +56,7 @@ export default function HomePage() {
                   href="#login"
                   className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#E4003C] px-6 text-sm font-bold text-white shadow-[0_12px_24px_rgba(228,0,60,0.28)] transition hover:bg-[#252064]"
                 >
-                  Войти в кабинет
+                  Оформить заявку
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
                 <a
