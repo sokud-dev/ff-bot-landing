@@ -152,14 +152,25 @@ export default function HomePage() {
 
         <section
           id="login"
-          className="flex flex-col items-center gap-6 rounded-[2rem] bg-white p-6 shadow-[0_18px_50px_rgba(37,32,100,0.1)] sm:p-8"
+          className="relative isolate flex flex-col items-center gap-6 overflow-hidden rounded-[2rem] bg-[radial-gradient(circle_at_18%_18%,rgba(228,0,60,0.18),transparent_30%),radial-gradient(circle_at_82%_12%,rgba(255,255,255,0.28),transparent_26%),linear-gradient(135deg,#252064_0%,#332a83_54%,#E4003C_100%)] p-6 text-white shadow-[0_24px_80px_rgba(37,32,100,0.2)] sm:p-8"
         >
-          <h2 className="text-center text-3xl font-black tracking-tight text-[#252064] sm:text-5xl">
+          <h2 className="relative text-center text-3xl font-black tracking-tight text-white sm:text-5xl">
             Оформи заявку прямо сейчас!
           </h2>
-          <div className="w-full max-w-md overflow-hidden rounded-3xl border border-[#252064]/15 bg-white shadow-[0_18px_50px_rgba(37,32,100,0.12)]">
-            <div className="h-2 w-full bg-[linear-gradient(90deg,#E4003C_0%,#E4003C_34%,#252064_34%,#252064_100%)]" />
-            <div className="p-6">
+          <div className="relative grid w-full max-w-4xl items-center gap-6 lg:grid-cols-[0.75fr_1fr]">
+            <div className="relative min-h-[220px] overflow-hidden rounded-3xl border border-white/25 bg-white/10 shadow-[0_18px_42px_rgba(0,0,0,0.16)] sm:min-h-[280px] lg:h-full">
+              <Image
+                src="/fulfillment-workers-pek-uniforms.png"
+                alt="Сотрудники склада в форме с логотипом ПЭК принимают, сортируют и упаковывают груз"
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+
+            <div className="relative w-full max-w-md justify-self-center overflow-hidden rounded-3xl border border-white/35 bg-white shadow-[0_24px_60px_rgba(0,0,0,0.18)]">
+              <div className="h-2 w-full bg-[linear-gradient(90deg,#E4003C_0%,#E4003C_34%,#252064_34%,#252064_100%)]" />
+              <div className="p-6">
               <div className="mb-5 flex flex-col gap-2">
                 <h2 className="text-xl font-black text-[#252064]">Вход в личный кабинет</h2>
                 <p className="text-sm text-[#252064]/70">Авторизация происходит на защищённой странице сервиса.</p>
@@ -275,6 +286,7 @@ export default function HomePage() {
                   Login
                 </button>
               </form>
+              </div>
             </div>
           </div>
         </section>
