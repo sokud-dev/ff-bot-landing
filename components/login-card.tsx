@@ -1,6 +1,6 @@
 'use client'
 
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import { Eye, Monitor, Smartphone } from 'lucide-react'
 
 type DeviceMode = 'desktop' | 'phone'
@@ -18,6 +18,18 @@ type LoginCardProps = {
 
 const PHONE_PREFIX = '+7'
 const PHONE_MASK_PLACEHOLDER = '+7 (___) ___-__-__'
+const FULFILLMENT_API_BASE_URL = 'https://fulfillment-api-production-cabe.up.railway.app/api/v1'
+const LAST_LOGIN_STORAGE_KEY = 'ff_last_login'
+const DEVICE_TYPE_STORAGE_KEY = 'ff_device_type'
+
+type FulfillmentLoginResponse = {
+  accessToken?: string
+  refreshToken?: string
+  user?: {
+    role?: string
+  }
+  message?: string
+}
 
 export function LoginCard({ legalLinks }: LoginCardProps) {
   const [deviceMode, setDeviceMode] = useState<DeviceMode>('desktop')
@@ -164,8 +176,51 @@ function LoginMaskForm({
   legalLinks: LegalLinks
   onLoginChange: (event: ChangeEvent<HTMLInputElement>) => void
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault()
+    setSubmitError('')
+
+    const formData = new FormData(event.currentTarget)
+    const login = loginValue.trim()
+    const password = String(formData.get('password_field') ?? '')
+
+    if (!login) {
+      setSubmitError('Введите email или телефон')
+      return
+    }
+
+    if (!password) {
+      setSubmitError('Введите пароль')
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      const authData = await loginToFulfillmentApp(login, password)
+
+      localStorage.setItem('token', authData.accessToken)
+      if (authData.refreshToken) {
+        localStorage.setItem('refresh_token', authData.refreshToken)
+      }
+      if (authData.user) {
+        localStorage.setItem('user', JSON.stringify(authData.user))
+      }
+      localStorage.setItem(LAST_LOGIN_STORAGE_KEY, login)
+      localStorage.setItem(DEVICE_TYPE_STORAGE_KEY, isPhoneMode ? 'mobile' : 'desktop')
+
+      window.location.assign(authData.user?.role === 'PLATFORM_ADMIN' ? '/platform' : '/dashboard')
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Не удалось выполнить вход')
+      setIsSubmitting(false)
+    }
+  }
+
   return (
-    <form autoComplete="off" className="flex flex-col gap-4">
+    <form autoComplete="off" className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <input type="text" style={{ display: 'none' }} readOnly name="fake_user" />
       <input type="password" style={{ display: 'none' }} readOnly name="fake_pass" />
       <div>
@@ -181,6 +236,7 @@ function LoginMaskForm({
             className="h-11 w-full rounded-xl border border-border bg-card px-3.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/15"
             name="login_field"
             value={loginValue}
+            required
             onChange={onLoginChange}
           />
         </div>
@@ -201,6 +257,7 @@ function LoginMaskForm({
               className="h-11 w-full rounded-xl border border-border bg-card px-3.5 pr-11 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/15"
               name="password_field"
               defaultValue=""
+              required
             />
             <div className="absolute right-0 top-0 flex h-full items-center pr-3">
               <button
@@ -275,15 +332,55 @@ function LoginMaskForm({
           </span>
         </label>
       </fieldset>
+      {submitError ? (
+        <div className="rounded-xl border border-destructive/30 bg-destructive/10 px-3.5 py-2.5 text-sm text-destructive">
+          {submitError}
+        </div>
+      ) : null}
       <button
         type="submit"
+        disabled={isSubmitting}
         className="mt-1 h-11 w-full rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-60"
         style={{ backgroundColor: '#D42B2B' }}
       >
-        Войти
+        {isSubmitting ? 'Входим...' : 'Войти'}
       </button>
     </form>
   )
+}
+
+async function loginToFulfillmentApp(login: string, password: string) {
+  const response = await fetch(`${FULFILLMENT_API_BASE_URL}/auth/login`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ login, password }),
+  })
+
+  const data = (await response.json().catch(() => ({}))) as FulfillmentLoginResponse
+
+  if (!response.ok) {
+    throw new Error(getLoginErrorMessage(data.message, response.status))
+  }
+
+  if (!data.accessToken) {
+    throw new Error('Не удалось получить токен авторизации')
+  }
+
+  return data as FulfillmentLoginResponse & { accessToken: string }
+}
+
+function getLoginErrorMessage(message: string | undefined, status: number) {
+  if (message && message !== 'Internal Server Error' && message !== 'Internal server error') {
+    return message
+  }
+
+  if (status === 500) {
+    return 'Ошибка сервера. Попробуйте ещё раз или обратитесь в поддержку.'
+  }
+
+  return 'Неверный логин или пароль'
 }
 
 function RegisterLink({ className }: { className: string }) {
