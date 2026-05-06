@@ -160,7 +160,7 @@ export default function HomePage() {
           <h2 className="relative text-center text-3xl font-black tracking-tight text-white sm:text-5xl">
             Оформи заявку прямо сейчас!
           </h2>
-          <div className="relative grid w-full max-w-4xl items-center gap-6 lg:grid-cols-[0.75fr_1fr]">
+          <div className="relative grid w-full max-w-6xl items-center gap-6 lg:grid-cols-[0.65fr_1.35fr]">
             <div className="relative min-h-[220px] overflow-hidden rounded-3xl border border-white/25 bg-white/10 shadow-[0_18px_42px_rgba(0,0,0,0.16)] sm:min-h-[280px] lg:h-full">
               <Image
                 src="/fulfillment-workers-pek-uniforms.png"
@@ -172,7 +172,7 @@ export default function HomePage() {
             </div>
 
             <div
-              className="relative w-full max-w-[700px] justify-self-center overflow-hidden rounded-2xl border border-border bg-card text-foreground shadow-2xl"
+              className="relative w-full max-w-[760px] justify-self-center overflow-hidden rounded-2xl border border-border bg-card text-foreground shadow-2xl"
               style={{ fontFamily: 'var(--font-sans, Inter, sans-serif)' }}
             >
               <div className="hidden md:flex">
@@ -386,6 +386,67 @@ function LoginMaskForm() {
           </div>
         </div>
       </div>
+      <fieldset className="flex flex-col gap-3">
+        <legend className="sr-only">Юридические согласия</legend>
+
+        <label className="flex items-start gap-3 text-xs leading-relaxed text-muted-foreground">
+          <input
+            name="accept_join_terms"
+            type="checkbox"
+            required
+            className="mt-0.5 size-4 shrink-0 rounded border-border accent-[#D42B2B]"
+          />
+          <span>
+            Я принимаю условия и тарифы присоединения к фулфилменту{' '}
+            <a
+              href={LEGAL_LINKS.joinAgreement}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary underline underline-offset-4 transition hover:text-foreground"
+            >
+              Соглашение о присоединении
+            </a>
+            {' и '}
+            <a
+              href={LEGAL_LINKS.fulfillmentServicesAgreement}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary underline underline-offset-4 transition hover:text-foreground"
+            >
+              Договор оказания услуг фулфилмента
+            </a>
+          </span>
+        </label>
+
+        <label className="flex items-start gap-3 text-xs leading-relaxed text-muted-foreground">
+          <input
+            name="accept_personal_data"
+            type="checkbox"
+            required
+            className="mt-0.5 size-4 shrink-0 rounded border-border accent-[#D42B2B]"
+          />
+          <span>
+            Я принимаю соглашение на обработку персональных данных согласно политике конфиденциальности{' '}
+            <a
+              href={LEGAL_LINKS.personalDataConsent}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary underline underline-offset-4 transition hover:text-foreground"
+            >
+              Согласие на обработку персональных данных
+            </a>
+            {' и '}
+            <a
+              href={LEGAL_LINKS.personalDataPolicy}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-primary underline underline-offset-4 transition hover:text-foreground"
+            >
+              Политика в отношении обработки персональных данных
+            </a>
+          </span>
+        </label>
+      </fieldset>
       <button
         type="submit"
         className="mt-1 h-11 w-full rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-60"
