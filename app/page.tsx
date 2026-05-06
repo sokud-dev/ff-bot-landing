@@ -1,20 +1,18 @@
 import {
   ArrowRight,
   Calculator,
-  Eye,
   FileText,
-  Monitor,
   PackageCheck,
   Phone,
   RefreshCcw,
   ShieldCheck,
-  Smartphone,
   Truck,
   Wallet,
 } from 'lucide-react'
 import Image from 'next/image'
 
 import ozonLogo from '../ozon.jpg'
+import { LoginCard } from '../components/login-card'
 import wildberriesLogo from '../png-wildberries-logotip-png-1.png'
 import yandexMarketLogo from '../ямаркет.jpeg'
 
@@ -171,114 +169,7 @@ export default function HomePage() {
               />
             </div>
 
-            <div
-              className="relative w-full max-w-[760px] justify-self-center overflow-hidden rounded-2xl border border-border bg-card text-foreground shadow-2xl"
-              style={{ fontFamily: 'var(--font-sans, Inter, sans-serif)' }}
-            >
-              <div className="hidden md:flex">
-                <div
-                  className="relative flex w-52 shrink-0 items-center justify-center overflow-hidden"
-                  style={{ background: '#0B1C3A' }}
-                >
-                  <div className="absolute -right-16 -top-16 h-48 w-48 rounded-full border border-white/[.05]" />
-                  <div className="absolute -bottom-20 -left-12 h-56 w-56 rounded-full border border-white/[.04]" />
-                  <div className="relative z-10 flex flex-col items-center gap-3 px-4">
-                    <p
-                      className="mb-2 text-[9.5px] font-semibold uppercase tracking-widest"
-                      style={{ color: 'rgba(255,255,255,.28)' }}
-                    >
-                      Режим устройства
-                    </p>
-                    <button
-                      type="button"
-                      className="flex w-28 flex-col items-center gap-2 rounded-xl py-4 transition-all"
-                      style={{ border: '1.5px solid rgba(255,255,255,.3)', background: 'rgba(255,255,255,.1)' }}
-                    >
-                      <Monitor className="size-[26px]" color="#fff" aria-hidden="true" />
-                      <span className="text-xs font-medium" style={{ color: '#fff' }}>
-                        Компьютер
-                      </span>
-                      <div className="h-[3px] w-6 rounded-full bg-red-500" />
-                    </button>
-                    <button
-                      type="button"
-                      className="flex w-28 flex-col items-center gap-2 rounded-xl py-4 transition-all"
-                      style={{ border: '1.5px solid rgba(255,255,255,.08)', background: 'rgba(255,255,255,.04)' }}
-                    >
-                      <Smartphone className="size-[26px]" color="rgba(255,255,255,.38)" aria-hidden="true" />
-                      <span className="text-xs font-medium" style={{ color: 'rgba(255,255,255,.42)' }}>
-                        Телефон
-                      </span>
-                    </button>
-                  </div>
-                </div>
-
-                <div className="flex flex-1 flex-col justify-center bg-card p-10">
-                  <h1 className="mb-1 text-xl font-bold text-foreground">Вход в систему</h1>
-                  <p className="mb-7 text-sm text-muted-foreground">Введите ваши данные</p>
-                  <LoginMaskForm />
-                  <p className="mt-6 text-center text-sm text-muted-foreground">
-                    Нет аккаунта?{' '}
-                    <a
-                      className="font-medium text-primary hover:underline"
-                      href="https://fulfillment-web-production.up.railway.app/register"
-                    >
-                      Зарегистрироваться
-                    </a>
-                  </p>
-                </div>
-              </div>
-
-              <div className="flex min-h-[560px] w-full flex-col md:hidden">
-                <div className="relative overflow-hidden px-6 pb-12 pt-12" style={{ background: '#0B1C3A' }}>
-                  <div className="absolute -right-10 -top-10 h-40 w-40 rounded-full border border-white/[.05]" />
-                  <div className="relative z-10">
-                    <p
-                      className="mb-4 text-center text-[9.5px] font-semibold uppercase tracking-widest"
-                      style={{ color: 'rgba(255,255,255,.28)' }}
-                    >
-                      Режим устройства
-                    </p>
-                    <div className="flex gap-3">
-                      <button
-                        type="button"
-                        className="flex flex-1 flex-col items-center gap-2 rounded-xl py-3.5 transition-all"
-                        style={{ border: '1.5px solid rgba(255,255,255,.3)', background: 'rgba(255,255,255,.1)' }}
-                      >
-                        <Monitor className="size-6" color="#fff" aria-hidden="true" />
-                        <span className="text-xs" style={{ color: '#fff' }}>
-                          Компьютер
-                        </span>
-                        <div className="h-[3px] w-5 rounded-full bg-red-500" />
-                      </button>
-                      <button
-                        type="button"
-                        className="flex flex-1 flex-col items-center gap-2 rounded-xl py-3.5 transition-all"
-                        style={{ border: '1.5px solid rgba(255,255,255,.08)', background: 'rgba(255,255,255,.04)' }}
-                      >
-                        <Smartphone className="size-6" color="rgba(255,255,255,.38)" aria-hidden="true" />
-                        <span className="text-xs" style={{ color: 'rgba(255,255,255,.42)' }}>
-                          Телефон
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="-mt-4 flex-1 rounded-t-3xl bg-card px-6 pb-10 pt-8">
-                  <h1 className="mb-6 text-lg font-bold text-foreground">Вход</h1>
-                  <LoginMaskForm />
-                  <p className="mt-5 text-center text-sm text-muted-foreground">
-                    Нет аккаунта?{' '}
-                    <a
-                      className="font-medium text-primary hover:underline"
-                      href="https://fulfillment-web-production.up.railway.app/register"
-                    >
-                      Зарегистрироваться
-                    </a>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <LoginCard legalLinks={LEGAL_LINKS} />
           </div>
         </section>
 
@@ -334,127 +225,6 @@ export default function HomePage() {
         </footer>
       </div>
     </main>
-  )
-}
-
-function LoginMaskForm() {
-  return (
-    <form autoComplete="off" className="flex flex-col gap-4">
-      <input type="text" style={{ display: 'none' }} readOnly name="fake_user" />
-      <input type="password" style={{ display: 'none' }} readOnly name="fake_pass" />
-      <div>
-        <label className="mb-1.5 block text-[10.5px] font-semibold uppercase tracking-widest text-muted-foreground">
-          Телефон или Email
-        </label>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="admin@fulfillment.ru"
-            autoComplete="off"
-            className="h-11 w-full rounded-xl border border-border bg-card px-3.5 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/15"
-            name="login_field"
-            defaultValue=""
-          />
-        </div>
-      </div>
-      <div>
-        <div className="mb-1.5 flex items-center justify-between">
-          <label className="text-[10.5px] font-semibold uppercase tracking-widest text-muted-foreground">Пароль</label>
-          <a className="text-xs text-primary hover:underline" href="https://fulfillment-web-production.up.railway.app/forgot-password">
-            Забыли пароль?
-          </a>
-        </div>
-        <div>
-          <div className="relative">
-            <input
-              type="password"
-              placeholder="••••••••"
-              autoComplete="new-password"
-              className="h-11 w-full rounded-xl border border-border bg-card px-3.5 pr-11 text-sm text-foreground outline-none transition-all placeholder:text-muted-foreground/50 focus:border-primary focus:ring-2 focus:ring-primary/15"
-              name="password_field"
-              defaultValue=""
-            />
-            <div className="absolute right-0 top-0 flex h-full items-center pr-3">
-              <button
-                type="button"
-                tabIndex={-1}
-                className="flex size-7 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <Eye className="size-[15px]" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <fieldset className="flex flex-col gap-3">
-        <legend className="sr-only">Юридические согласия</legend>
-
-        <label className="flex items-start gap-3 text-xs leading-relaxed text-muted-foreground">
-          <input
-            name="accept_join_terms"
-            type="checkbox"
-            required
-            className="mt-0.5 size-4 shrink-0 rounded border-border accent-[#D42B2B]"
-          />
-          <span>
-            Я принимаю условия и тарифы присоединения к фулфилменту{' '}
-            <a
-              href={LEGAL_LINKS.joinAgreement}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary underline underline-offset-4 transition hover:text-foreground"
-            >
-              Соглашение о присоединении
-            </a>
-            {' и '}
-            <a
-              href={LEGAL_LINKS.fulfillmentServicesAgreement}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary underline underline-offset-4 transition hover:text-foreground"
-            >
-              Договор оказания услуг фулфилмента
-            </a>
-          </span>
-        </label>
-
-        <label className="flex items-start gap-3 text-xs leading-relaxed text-muted-foreground">
-          <input
-            name="accept_personal_data"
-            type="checkbox"
-            required
-            className="mt-0.5 size-4 shrink-0 rounded border-border accent-[#D42B2B]"
-          />
-          <span>
-            Я принимаю соглашение на обработку персональных данных согласно политике конфиденциальности{' '}
-            <a
-              href={LEGAL_LINKS.personalDataConsent}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary underline underline-offset-4 transition hover:text-foreground"
-            >
-              Согласие на обработку персональных данных
-            </a>
-            {' и '}
-            <a
-              href={LEGAL_LINKS.personalDataPolicy}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-medium text-primary underline underline-offset-4 transition hover:text-foreground"
-            >
-              Политика в отношении обработки персональных данных
-            </a>
-          </span>
-        </label>
-      </fieldset>
-      <button
-        type="submit"
-        className="mt-1 h-11 w-full rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-60"
-        style={{ backgroundColor: '#D42B2B' }}
-      >
-        Войти
-      </button>
-    </form>
   )
 }
 
