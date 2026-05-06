@@ -106,9 +106,6 @@ export default function HomePage() {
                         {index + 1}
                       </span>
                       <span className="font-bold">{step}</span>
-                      {index < ROUTE_STEPS.length - 1 ? (
-                        <ArrowRight className="ml-auto size-4 text-[#E4003C]" aria-hidden="true" />
-                      ) : null}
                     </div>
                   ))}
                 </div>
