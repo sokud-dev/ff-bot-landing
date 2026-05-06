@@ -13,6 +13,7 @@ import Image from 'next/image'
 
 import ozonLogo from '../ozon.jpg'
 import wildberriesLogo from '../png-wildberries-logotip-png-1.png'
+import yandexMarketLogo from '../ямаркет.jpeg'
 
 const LEGAL_LINKS = {
   joinAgreement: '/docs/join-agreement.pdf',
@@ -339,8 +340,11 @@ function FeatureCard({ icon, title }: { icon: React.ReactNode; title: string }) 
 function MarketplaceCard({ title }: { title: string }) {
   const isWildberries = title === 'Wildberries'
   const isOzon = title === 'Ozon'
-  const logo = isWildberries ? wildberriesLogo : isOzon ? ozonLogo : null
-  const logoClassName = 'size-12 shrink-0 rounded-2xl object-cover shadow-sm'
+  const isYandexMarket = title === 'Яндекс Маркет'
+  const logo = isWildberries ? wildberriesLogo : isOzon ? ozonLogo : isYandexMarket ? yandexMarketLogo : null
+  const logoClassName = isYandexMarket
+    ? 'size-12 shrink-0 rounded-2xl object-contain p-1.5 shadow-sm'
+    : 'size-12 shrink-0 rounded-2xl object-cover shadow-sm'
   const displayTitle = isOzon ? 'OZON' : title
 
   return (
