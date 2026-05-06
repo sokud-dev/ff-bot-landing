@@ -1,4 +1,4 @@
-import { Calculator, Phone, RefreshCcw, Wallet } from 'lucide-react'
+import { Calculator, FileText, Phone, RefreshCcw, Wallet } from 'lucide-react'
 
 const LEGAL_LINKS = {
   joinAgreement: '/docs/join-agreement.pdf',
@@ -171,31 +171,37 @@ export default function HomePage() {
                 </a>
               </p>
             </div>
-            <nav className="flex flex-wrap gap-x-3 gap-y-2">
-              <a
-                href={LEGAL_LINKS.joinAgreement}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary underline underline-offset-4 transition hover:opacity-80"
-              >
-                Соглашение о присоединении
-              </a>
-              <a
-                href={LEGAL_LINKS.fulfillmentServicesAgreement}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary underline underline-offset-4 transition hover:opacity-80"
-              >
-                Договор фулфилмента
-              </a>
-              <a
-                href={LEGAL_LINKS.personalDataPolicy}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary underline underline-offset-4 transition hover:opacity-80"
-              >
-                Политика ПДн
-              </a>
+            <nav className="flex flex-col gap-2">
+              <p className="inline-flex w-fit items-center gap-2 rounded-full bg-primary px-3 py-1.5 font-semibold text-primary-foreground shadow-sm">
+                <FileText className="size-4" aria-hidden="true" />
+                Документы
+              </p>
+              <div className="flex flex-wrap gap-x-3 gap-y-2">
+                <a
+                  href={LEGAL_LINKS.joinAgreement}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline underline-offset-4 transition hover:opacity-80"
+                >
+                  Соглашение о присоединении
+                </a>
+                <a
+                  href={LEGAL_LINKS.fulfillmentServicesAgreement}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline underline-offset-4 transition hover:opacity-80"
+                >
+                  Договор фулфилмента
+                </a>
+                <a
+                  href={LEGAL_LINKS.personalDataPolicy}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary underline underline-offset-4 transition hover:opacity-80"
+                >
+                  Политика ПДн
+                </a>
+              </div>
             </nav>
           </div>
         </footer>
