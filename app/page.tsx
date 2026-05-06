@@ -122,19 +122,24 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <FeatureCard
-            icon={<Calculator className="size-5" aria-hidden="true" />}
-            title="Быстрый расчет стоимости фулфилмента для вашего бизнеса. Без менеджера и ожидания"
-          />
-          <FeatureCard
-            icon={<RefreshCcw className="size-5" aria-hidden="true" />}
-            title="Полный цикл в одном окне: от оформления заявки до отслеживания груза"
-          />
-          <FeatureCard
-            icon={<Wallet className="size-5" aria-hidden="true" />}
-            title="Автопополнение баланса с онлайн-кассой — настрой лимит, плати доставку автоматически, без простоев в логистике"
-          />
+        <section className="flex flex-col gap-5 rounded-[2rem] bg-white p-6 shadow-[0_18px_50px_rgba(37,32,100,0.1)] sm:p-8">
+          <h2 className="text-center text-3xl font-black tracking-tight text-[#252064] sm:text-5xl">
+            Преимущества работы с нами
+          </h2>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <FeatureCard
+              icon={<Calculator className="size-5" aria-hidden="true" />}
+              title="Быстрый расчет стоимости фулфилмента для вашего бизнеса. Без менеджера и ожидания"
+            />
+            <FeatureCard
+              icon={<RefreshCcw className="size-5" aria-hidden="true" />}
+              title="Полный цикл в одном окне: от оформления заявки до отслеживания груза"
+            />
+            <FeatureCard
+              icon={<Wallet className="size-5" aria-hidden="true" />}
+              title="Автопополнение баланса с онлайн-кассой — настрой лимит, плати доставку автоматически, без простоев в логистике"
+            />
+          </div>
         </section>
 
         <section id="login" className="flex flex-col items-center gap-6">
@@ -319,10 +324,10 @@ function FeatureCard({ icon, title }: { icon: React.ReactNode; title: string }) 
   return (
     <div className="group relative overflow-hidden rounded-3xl border border-[#252064]/15 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
       <div className="absolute right-0 top-0 h-full w-2 bg-[#E4003C]" aria-hidden="true" />
-      <div className="mb-4 inline-flex size-11 items-center justify-center rounded-2xl bg-[#252064]/10 text-[#252064] transition group-hover:bg-[#E4003C] group-hover:text-white">
+      <div className="mb-4 inline-flex size-11 items-center justify-center rounded-2xl bg-[#E4003C]/10 text-[#E4003C] transition group-hover:bg-[#E4003C] group-hover:text-white">
         {icon}
       </div>
-      <p className="pr-3 text-pretty text-sm font-medium leading-relaxed text-[#252064]/75">{title}</p>
+      <p className="pr-3 text-pretty text-lg font-semibold leading-relaxed text-[#252064]/80">{title}</p>
     </div>
   )
 }
