@@ -11,6 +11,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 
+import ozonLogo from '../ozon.jpg'
 import wildberriesLogo from '../png-wildberries-logotip-png-1.png'
 
 const LEGAL_LINKS = {
@@ -337,18 +338,22 @@ function FeatureCard({ icon, title }: { icon: React.ReactNode; title: string }) 
 
 function MarketplaceCard({ title }: { title: string }) {
   const isWildberries = title === 'Wildberries'
+  const isOzon = title === 'Ozon'
+  const logo = isWildberries ? wildberriesLogo : isOzon ? ozonLogo : null
+  const logoClassName = 'size-12 shrink-0 rounded-2xl object-cover shadow-sm'
+  const displayTitle = isOzon ? 'OZON' : title
 
   return (
     <div className="rounded-2xl border border-[#252064]/15 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#E4003C]/40 hover:shadow-md">
-      {isWildberries ? (
+      {logo ? (
         <div className="flex items-center gap-3">
           <Image
-            src={wildberriesLogo}
-            alt="Логотип Wildberries"
-            className="size-12 shrink-0 rounded-2xl object-cover shadow-sm"
+            src={logo}
+            alt={`Логотип ${title}`}
+            className={logoClassName}
             priority
           />
-          <p className="text-base font-black text-[#252064]">{title}</p>
+          <p className="text-base font-black text-[#252064]">{displayTitle}</p>
         </div>
       ) : (
         <>
