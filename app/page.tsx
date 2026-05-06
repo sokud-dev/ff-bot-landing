@@ -9,6 +9,9 @@ import {
   Truck,
   Wallet,
 } from 'lucide-react'
+import Image from 'next/image'
+
+import wildberriesLogo from '../png-wildberries-logotip-png-1.png'
 
 const LEGAL_LINKS = {
   joinAgreement: '/docs/join-agreement.pdf',
@@ -333,10 +336,26 @@ function FeatureCard({ icon, title }: { icon: React.ReactNode; title: string }) 
 }
 
 function MarketplaceCard({ title }: { title: string }) {
+  const isWildberries = title === 'Wildberries'
+
   return (
     <div className="rounded-2xl border border-[#252064]/15 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#E4003C]/40 hover:shadow-md">
-      <div className="mb-3 h-1.5 w-12 rounded-full bg-[#E4003C]" />
-      <p className="text-base font-black text-[#252064]">{title}</p>
+      {isWildberries ? (
+        <div className="flex items-center gap-3">
+          <Image
+            src={wildberriesLogo}
+            alt="Логотип Wildberries"
+            className="size-12 shrink-0 rounded-2xl object-cover shadow-sm"
+            priority
+          />
+          <p className="text-base font-black text-[#252064]">{title}</p>
+        </div>
+      ) : (
+        <>
+          <div className="mb-3 h-1.5 w-12 rounded-full bg-[#E4003C]" />
+          <p className="text-base font-black text-[#252064]">{title}</p>
+        </>
+      )}
     </div>
   )
 }
