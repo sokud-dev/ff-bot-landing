@@ -11,10 +11,10 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 
-import ozonLogo from '../ozon.jpg'
 import { LoginCard } from '../components/login-card'
-import wildberriesLogo from '../png-wildberries-logotip-png-1.png'
-import yandexMarketLogo from '../ямаркет.jpeg'
+import ozonLogo from '@/assets/images/marketplaces/ozon.jpg'
+import wildberriesLogo from '@/assets/images/marketplaces/wildberries.png'
+import yandexMarketLogo from '@/assets/images/marketplaces/yandex-market.jpeg'
 
 const LEGAL_LINKS = {
   joinAgreement: '/documents/ПЭК_Соглашение о присоединении к договору оказания услуг Фулфилмента.docx',
