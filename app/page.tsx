@@ -153,18 +153,18 @@ export default function HomePage() {
           </h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
-              icon={<Calculator className="size-5" aria-hidden="true" />}
               illustration="calculator"
-              title="Быстрый расчет стоимости фулфилмента для вашего бизнеса. Без менеджера и ожидания"
+              lead="Быстро и онлайн"
+              title="Расчет стоимости и оформление поставки на маркетплейс. Без менеджера и ожидания"
             />
             <FeatureCard
-              icon={<RefreshCcw className="size-5" aria-hidden="true" />}
               illustration="cycle"
-              title="Полный цикл в одном окне: от оформления заявки до отслеживания груза"
+              lead="Все в одном окне"
+              title="Полный цикл: от оформления заявки до отслеживания груза с простым документооборотом"
             />
             <FeatureCard
-              icon={<Wallet className="size-5" aria-hidden="true" />}
               illustration="payment"
+              lead="Удобная оплата"
               title="Автопополнение баланса с онлайн-кассой — настрой лимит, плати доставку автоматически, без простоев в логистике"
             />
           </div>
@@ -248,22 +248,26 @@ export default function HomePage() {
 }
 
 function FeatureCard({
-  icon,
   illustration,
+  lead,
   title,
 }: {
-  icon: React.ReactNode
   illustration: 'calculator' | 'cycle' | 'payment'
+  lead?: string
   title: string
 }) {
   return (
     <div className="group relative min-h-[270px] overflow-hidden rounded-3xl border border-[#252064]/15 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg">
       <div className="absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_20%_20%,rgba(228,0,60,0.16),transparent_34%),linear-gradient(135deg,rgba(37,32,100,0.08),rgba(228,0,60,0.06))]" aria-hidden="true" />
       <div className="absolute right-0 top-0 h-full w-2 bg-[#E4003C]" aria-hidden="true" />
-      <div className="relative mb-5 flex items-start justify-between gap-4">
-        <div className="inline-flex size-11 items-center justify-center rounded-2xl bg-[#E4003C]/10 text-[#E4003C] transition group-hover:bg-[#E4003C] group-hover:text-white">
-          {icon}
-        </div>
+      <div
+        className={`relative mb-5 flex items-center gap-3 sm:gap-4 ${lead ? 'justify-between' : 'justify-end'}`}
+      >
+        {lead ? (
+          <p className="min-w-0 flex-1 text-balance text-left text-xl font-black leading-tight tracking-tight text-[#252064] sm:text-2xl">
+            {lead}
+          </p>
+        ) : null}
         <FeatureIllustration type={illustration} />
       </div>
       <p className="relative pr-3 text-pretty text-lg font-semibold leading-relaxed text-[#252064]/80">{title}</p>
