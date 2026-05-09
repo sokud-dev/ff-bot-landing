@@ -24,7 +24,12 @@ const LEGAL_LINKS = {
 
 const MARKETPLACES = ['Wildberries', 'Ozon', 'Яндекс Маркет'] as const
 
-const ROUTE_STEPS = ['Приемка', 'Хранение', 'Комплектация', 'Отгрузка'] as const
+const ROUTE_STEPS = [
+  'Оформление поставки',
+  'Оплата',
+  'Упаковка груза и маркировка штрихкодом',
+  'Отгрузка на склад',
+] as const
 
 export default function HomePage() {
   return (
@@ -94,16 +99,35 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="my-8 grid gap-3">
+                <div className="my-8 grid gap-4 sm:grid-cols-2">
                   {ROUTE_STEPS.map((step, index) => (
                     <div
                       key={step}
-                      className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-[#252064] shadow-sm"
+                      className={`relative rounded-2xl bg-white px-4 py-3.5 text-[#252064] shadow-sm ${
+                        index === 2 ? 'sm:col-start-2' : index === 3 ? 'sm:col-start-1 sm:row-start-2' : ''
+                      }`}
                     >
-                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#252064] text-sm font-black text-white">
-                        {index + 1}
-                      </span>
-                      <span className="font-bold">{step}</span>
+                      <div className="mb-2 flex items-center justify-between gap-3">
+                        <span className="text-[10px] font-black uppercase tracking-[0.16em] text-[#252064]/55">
+                          Шаг {index + 1}
+                        </span>
+                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#252064] text-sm font-black text-white">
+                          {index + 1}
+                        </span>
+                      </div>
+                      <p className="text-sm font-black leading-snug">{step}</p>
+                      {index < ROUTE_STEPS.length - 1 ? (
+                        <ArrowRight
+                          className={`absolute z-10 hidden size-5 rounded-full bg-[#252064] p-1 text-white shadow-md sm:block ${
+                            index === 1
+                              ? '-bottom-3 left-1/2 -translate-x-1/2 rotate-90'
+                              : index === 2
+                                ? 'left-[-1.1rem] top-1/2 -translate-y-1/2 rotate-180'
+                                : 'right-[-1.1rem] top-1/2 -translate-y-1/2'
+                          }`}
+                          aria-hidden="true"
+                        />
+                      ) : null}
                     </div>
                   ))}
                 </div>
