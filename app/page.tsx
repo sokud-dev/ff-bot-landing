@@ -1,20 +1,19 @@
 import {
   ArrowRight,
+  Box,
   Calculator,
   FileText,
   PackageCheck,
   Phone,
   RefreshCcw,
   ShieldCheck,
+  Store,
   Truck,
   Wallet,
 } from 'lucide-react'
 import Image from 'next/image'
 
 import { LoginCard } from '../components/login-card'
-import ozonLogo from '@/assets/images/marketplaces/ozon.jpg'
-import wildberriesLogo from '@/assets/images/marketplaces/wildberries.png'
-import yandexMarketLogo from '@/assets/images/marketplaces/yandex-market.jpeg'
 
 const LEGAL_LINKS = {
   joinAgreement: '/documents/ПЭК_Соглашение о присоединении к договору оказания услуг Фулфилмента.docx',
@@ -34,7 +33,7 @@ export default function HomePage() {
         <section className="relative overflow-hidden rounded-[2rem] bg-white shadow-[0_24px_80px_rgba(37,32,100,0.16)]">
           <div className="absolute inset-y-0 right-0 hidden w-1/2 bg-[#252064] lg:block" aria-hidden="true" />
           <div
-            className="absolute -right-24 top-0 hidden h-full w-[58%] skew-x-[-12deg] bg-[#E4003C] lg:block"
+            className="absolute -right-24 top-0 hidden h-full w-[58%] skew-x-[-12deg] bg-[#252064] lg:block"
             aria-hidden="true"
           />
           <div
@@ -43,18 +42,17 @@ export default function HomePage() {
           />
 
           <div className="relative grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:p-12">
-            <div className="flex flex-col justify-center gap-7">
+            <div className="flex flex-col justify-center gap-7 lg:pr-10 xl:pr-14">
               <div className="inline-flex w-fit items-center gap-3 rounded-full bg-[#252064]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-[#252064]">
-                <span className="size-2 rounded-full bg-[#E4003C]" aria-hidden="true" />
+                <span className="size-2 rounded-full bg-[#252064]" aria-hidden="true" />
                 Фулфилмент · B2B логистика
               </div>
               <div className="flex flex-col gap-4">
                 <h1 className="max-w-3xl text-balance text-4xl font-black leading-[0.98] tracking-tight text-[#252064] sm:text-6xl lg:text-7xl">
                   Доставка до маркетплейсов
                 </h1>
-                <p className="max-w-2xl text-pretty text-lg leading-relaxed text-[#252064]/70 sm:text-xl">
-                  Доставим ваши товары на склады в срок: от приемки и упаковки до отгрузки в Wildberries, Ozon и
-                  Яндекс Маркет.
+                <p className="max-w-2xl text-pretty text-lg leading-relaxed text-[#252064] sm:text-xl lg:max-w-lg">
+                  Доставим ваши товары на Wildberries, Ozon, Яндекс Маркет в срок в два клика
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
@@ -67,7 +65,7 @@ export default function HomePage() {
                 </a>
                 <a
                   href="tel:+74956400102"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[#252064]/20 bg-white px-6 text-sm font-bold text-[#252064] transition hover:border-[#E4003C]/40 hover:bg-[#252064]/5"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[#252064]/20 bg-white px-6 text-sm font-bold text-[#252064] transition hover:border-[#252064]/40 hover:bg-[#252064]/5"
                 >
                   <Phone className="size-4" aria-hidden="true" />
                   +7 (495) 640-01-02
@@ -91,7 +89,7 @@ export default function HomePage() {
                     <p className="text-sm font-semibold uppercase tracking-[0.18em] text-white/70">FF Logistics</p>
                     <p className="mt-2 text-2xl font-black">Склад + доставка в одном окне</p>
                   </div>
-                  <div className="rounded-2xl bg-white p-3 text-[#E4003C] shadow-lg">
+                  <div className="rounded-2xl bg-white p-3 text-[#252064] shadow-lg">
                     <Truck className="size-8" aria-hidden="true" />
                   </div>
                 </div>
@@ -102,7 +100,7 @@ export default function HomePage() {
                       key={step}
                       className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-[#252064] shadow-sm"
                     >
-                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#E4003C] text-sm font-black text-white">
+                      <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#252064] text-sm font-black text-white">
                         {index + 1}
                       </span>
                       <span className="font-bold">{step}</span>
@@ -112,10 +110,10 @@ export default function HomePage() {
 
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded-2xl bg-white p-4 text-[#252064]">
-                    <PackageCheck className="mb-3 size-6 text-[#E4003C]" aria-hidden="true" />
+                    <PackageCheck className="mb-3 size-6 text-[#252064]" aria-hidden="true" />
                     <p className="text-sm font-bold leading-snug">Маркировка и упаковка</p>
                   </div>
-                  <div className="rounded-2xl bg-[#E4003C] p-4 text-white">
+                  <div className="rounded-2xl bg-[#252064] p-4 text-white">
                     <ShieldCheck className="mb-3 size-6" aria-hidden="true" />
                     <p className="text-sm font-bold leading-snug">Контроль сроков поставки</p>
                   </div>
@@ -309,30 +307,37 @@ function MarketplaceCard({ title }: { title: string }) {
   const isWildberries = title === 'Wildberries'
   const isOzon = title === 'Ozon'
   const isYandexMarket = title === 'Яндекс Маркет'
-  const logo = isWildberries ? wildberriesLogo : isOzon ? ozonLogo : isYandexMarket ? yandexMarketLogo : null
-  const logoClassName = isYandexMarket
-    ? 'size-12 shrink-0 rounded-2xl object-contain p-1.5 shadow-sm'
-    : 'size-12 shrink-0 rounded-2xl object-cover shadow-sm'
   const displayTitle = isOzon ? 'OZON' : title
 
   return (
-    <div className="rounded-2xl border border-[#252064]/15 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#E4003C]/40 hover:shadow-md">
-      {logo ? (
-        <div className="flex items-center gap-3">
-          <Image
-            src={logo}
-            alt={`Логотип ${title}`}
-            className={logoClassName}
-            priority
-          />
-          <p className="text-base font-black text-[#252064]">{displayTitle}</p>
-        </div>
-      ) : (
-        <>
-          <div className="mb-3 h-1.5 w-12 rounded-full bg-[#E4003C]" />
-          <p className="text-base font-black text-[#252064]">{title}</p>
-        </>
-      )}
+    <div className="rounded-2xl border border-[#252064]/15 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#252064]/40 hover:shadow-md">
+      <div className="flex items-center gap-3">
+        {isWildberries ? (
+          <div
+            className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#252064]/10 shadow-sm ring-1 ring-[#252064]/10"
+            aria-hidden="true"
+          >
+            <Store className="size-6 text-[#252064]" />
+          </div>
+        ) : isOzon ? (
+          <div
+            className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#252064]/10 shadow-sm ring-1 ring-[#252064]/10"
+            aria-hidden="true"
+          >
+            <Box className="size-6 text-[#252064]" />
+          </div>
+        ) : isYandexMarket ? (
+          <div
+            className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#252064]/10 shadow-sm ring-1 ring-[#252064]/10"
+            aria-hidden="true"
+          >
+            <Truck className="size-6 text-[#252064]" />
+          </div>
+        ) : (
+          <div className="h-1.5 w-12 shrink-0 rounded-full bg-[#252064]" aria-hidden="true" />
+        )}
+        <p className="text-base font-black text-[#252064]">{displayTitle}</p>
+      </div>
     </div>
   )
 }
