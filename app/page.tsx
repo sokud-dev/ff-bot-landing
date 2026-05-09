@@ -155,7 +155,7 @@ export default function HomePage() {
             <FeatureCard
               illustration="calculator"
               lead="Быстро и онлайн"
-              title="Расчет стоимости и оформление поставки на маркетплейс. Без менеджера и ожидания"
+              title="Расчет стоимости в калькуляторе и оформление поставки на маркетплейс. Без менеджера и ожидания"
             />
             <FeatureCard
               illustration="cycle"
