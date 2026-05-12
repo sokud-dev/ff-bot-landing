@@ -1,7 +1,8 @@
 'use client'
 
-import { ChangeEvent, FormEvent, useState } from 'react'
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Eye } from 'lucide-react'
+import { useSearchParams } from 'next/navigation'
 
 type LegalLinks = {
   joinAgreement: string
@@ -29,8 +30,15 @@ type FulfillmentLoginResponse = {
 }
 
 export function LoginCard({ legalLinks }: LoginCardProps) {
+  const searchParams = useSearchParams()
   const [loginValue, setLoginValue] = useState('')
   const [loginFlow, setLoginFlow] = useState<LoginFlow>('auth')
+
+  useEffect(() => {
+    if (searchParams.get('register') === '1') {
+      setLoginFlow('registration')
+    }
+  }, [searchParams])
 
   function handleLoginChange(event: ChangeEvent<HTMLInputElement>) {
     setLoginValue(event.target.value)

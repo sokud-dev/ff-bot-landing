@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import {
   ArrowRight,
   Box,
@@ -13,6 +14,7 @@ import {
 } from 'lucide-react'
 import Image from 'next/image'
 
+import { FboMiniappSection } from '../components/fbo-miniapp-section'
 import { LoginCard } from '../components/login-card'
 
 const LEGAL_LINKS = {
@@ -170,15 +172,17 @@ export default function HomePage() {
           </div>
         </section>
 
+        <FboMiniappSection />
+
         <section
           id="login"
-          className="relative isolate flex flex-col items-center gap-6 overflow-hidden rounded-[2rem] bg-[radial-gradient(circle_at_18%_18%,rgba(228,0,60,0.18),transparent_30%),radial-gradient(circle_at_82%_12%,rgba(255,255,255,0.28),transparent_26%),linear-gradient(135deg,#252064_0%,#332a83_54%,#E4003C_100%)] p-6 text-white shadow-[0_24px_80px_rgba(37,32,100,0.2)] sm:p-8"
+          className="relative isolate flex flex-col items-center gap-6 overflow-hidden rounded-[2rem] bg-white p-6 text-[#252064] shadow-[0_18px_50px_rgba(37,32,100,0.1)] sm:p-8"
         >
-          <h2 className="relative text-center text-3xl font-black tracking-tight text-white sm:text-5xl">
+          <h2 className="relative text-center text-3xl font-black tracking-tight text-[#252064] sm:text-5xl">
             Оформи заявку прямо сейчас!
           </h2>
           <div className="relative grid w-full max-w-6xl items-center gap-6 lg:grid-cols-[0.65fr_1.35fr]">
-            <div className="relative min-h-[220px] overflow-hidden rounded-3xl border border-white/25 bg-white/10 shadow-[0_18px_42px_rgba(0,0,0,0.16)] sm:min-h-[280px] lg:h-full">
+            <div className="relative min-h-[220px] overflow-hidden rounded-3xl border border-[#252064]/12 bg-[#252064]/[0.04] shadow-sm sm:min-h-[280px] lg:h-full">
               <Image
                 src="/fulfillment-workers-pek-uniforms.png"
                 alt="Сотрудники склада в форме с логотипом ПЭК принимают, сортируют и упаковывают груз"
@@ -188,7 +192,15 @@ export default function HomePage() {
               />
             </div>
 
-            <LoginCard legalLinks={LEGAL_LINKS} />
+            <Suspense
+              fallback={
+                <div className="relative flex min-h-[320px] w-full max-w-[520px] justify-self-center items-center justify-center overflow-hidden rounded-3xl border border-[#252064]/12 bg-white px-6 text-center text-sm font-semibold text-[#252064]/70">
+                  Загрузка формы…
+                </div>
+              }
+            >
+              <LoginCard legalLinks={LEGAL_LINKS} />
+            </Suspense>
           </div>
         </section>
 
