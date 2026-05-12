@@ -5,6 +5,9 @@ out/
 dist/
 .vercel/
 
+# local auth store (dev / MVP)
+data/users.json
+
 # env
 .env
 .env.*

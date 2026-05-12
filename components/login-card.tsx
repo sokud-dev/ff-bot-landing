@@ -2,7 +2,10 @@
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Eye } from 'lucide-react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { toast } from 'sonner'
+
+import { Spinner } from '@/components/ui/spinner'
 
 type LegalLinks = {
   joinAgreement: string
@@ -17,16 +20,53 @@ type LoginCardProps = {
 
 type LoginFlow = 'auth' | 'registration'
 
-const FULFILLMENT_API_BASE_URL = 'https://fulfillment-api-production-cabe.up.railway.app/api/v1'
 const LAST_LOGIN_STORAGE_KEY = 'ff_last_login'
 
-type FulfillmentLoginResponse = {
-  accessToken?: string
-  refreshToken?: string
+type AuthSuccess = {
+  success: true
+  token: string
   user?: {
+    id: string
+    email: string
+    name?: string
     role?: string
   }
-  message?: string
+}
+
+type AuthResponse = AuthSuccess | { success: false; error?: string }
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
+}
+
+async function postAuthJson(path: '/api/login' | '/api/register', body: Record<string, string>): Promise<AuthSuccess> {
+  let response: Response
+  try {
+    response = await fetch(path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(body),
+    })
+  } catch (error) {
+    console.error('Auth request network error:', error)
+    throw new Error(
+      'Нет соединения с сервером. Запустите приложение командой npm run dev — запросы идут на тот же хост и порт, что и страница (относительные пути /api/login и /api/register).',
+    )
+  }
+
+  const data = (await response.json().catch(() => ({}))) as AuthResponse
+
+  if (data.success === true && data.token) {
+    return data
+  }
+
+  const message =
+    typeof data === 'object' && data && 'error' in data && typeof data.error === 'string' && data.error
+      ? data.error
+      : `Ошибка ${response.status}`
+
+  throw new Error(message)
 }
 
 export function LoginCard({ legalLinks }: LoginCardProps) {
@@ -122,6 +162,7 @@ function LoginMaskForm({
   onLoginChange: (event: ChangeEvent<HTMLInputElement>) => void
   onSwitchToAuth: () => void
 }) {
+  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
 
@@ -138,28 +179,55 @@ function LoginMaskForm({
       return
     }
 
+    if (!isValidEmail(login)) {
+      setSubmitError('Некорректный email')
+      return
+    }
+
     if (!password) {
       setSubmitError('Введите пароль')
       return
     }
 
+    if (password.length < 6) {
+      setSubmitError('Пароль не короче 6 символов')
+      return
+    }
+
+    if (flow === 'registration') {
+      const name = String(formData.get('full_name') ?? '').trim()
+      if (!name) {
+        setSubmitError('Введите имя')
+        return
+      }
+    }
+
     setIsSubmitting(true)
 
     try {
-      const authData = await loginToFulfillmentApp(login, password)
+      const authData =
+        flow === 'registration'
+          ? await postAuthJson('/api/register', {
+              email: login,
+              password,
+              name: String(formData.get('full_name') ?? '').trim(),
+            })
+          : await postAuthJson('/api/login', { email: login, password })
 
-      localStorage.setItem('token', authData.accessToken)
-      if (authData.refreshToken) {
-        localStorage.setItem('refresh_token', authData.refreshToken)
-      }
+      localStorage.setItem('token', authData.token)
+      localStorage.removeItem('refresh_token')
       if (authData.user) {
         localStorage.setItem('user', JSON.stringify(authData.user))
       }
       localStorage.setItem(LAST_LOGIN_STORAGE_KEY, login)
 
-      window.location.assign(authData.user?.role === 'PLATFORM_ADMIN' ? '/platform' : '/dashboard')
+      toast.success(flow === 'auth' ? 'Вход выполнен' : 'Регистрация успешна')
+      router.push('/dashboard')
     } catch (error) {
-      setSubmitError(error instanceof Error ? error.message : 'Не удалось выполнить вход')
+      console.error('Auth submit error:', error)
+      const message = error instanceof Error ? error.message : 'Не удалось выполнить запрос'
+      setSubmitError(message)
+      toast.error(message)
       setIsSubmitting(false)
     }
   }
@@ -187,25 +255,45 @@ function LoginMaskForm({
           onChange={onLoginChange}
         />
       </div>
+      {flow === 'registration' ? (
+        <div>
+          <label className="mb-1.5 block text-[10.5px] font-bold uppercase tracking-widest text-[#252064]/55">
+            Имя
+          </label>
+          <input
+            type="text"
+            name="full_name"
+            placeholder="Иван Иванов"
+            autoComplete="name"
+            className={inputClassName}
+            required
+          />
+        </div>
+      ) : null}
       <div>
         <div className="mb-1.5 flex items-center justify-between">
           <label className="text-[10.5px] font-bold uppercase tracking-widest text-[#252064]/55">Пароль</label>
-          <a
-            className="text-xs font-semibold text-[#E4003C] underline-offset-4 hover:underline"
-            href="https://fulfillment-web-production.up.railway.app/forgot-password"
-          >
-            Забыли пароль?
-          </a>
+          {flow === 'auth' ? (
+            <a
+              className="text-xs font-semibold text-[#E4003C] underline-offset-4 hover:underline"
+              href="https://fulfillment-web-production.up.railway.app/forgot-password"
+            >
+              Забыли пароль?
+            </a>
+          ) : (
+            <span className="text-[10.5px] font-bold uppercase tracking-widest text-[#252064]/35">Мин. 6 символов</span>
+          )}
         </div>
         <div className="relative">
           <input
             type="password"
             placeholder="••••••••"
-            autoComplete="current-password"
+            autoComplete={flow === 'registration' ? 'new-password' : 'current-password'}
             className={`${inputClassName} pr-11`}
             name="password_field"
             defaultValue=""
             required
+            minLength={6}
           />
           <div className="absolute right-0 top-0 flex h-full items-center pr-3">
             <button
@@ -304,46 +392,21 @@ function LoginMaskForm({
       <button
         type="submit"
         disabled={isSubmitting}
-        className="mt-1 h-11 w-full rounded-xl bg-[#E4003C] text-sm font-bold text-white shadow-[0_12px_24px_rgba(228,0,60,0.22)] transition-opacity hover:bg-[#252064] disabled:opacity-60"
+        className="mt-1 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#E4003C] text-sm font-bold text-white shadow-[0_12px_24px_rgba(228,0,60,0.22)] transition-opacity hover:bg-[#252064] disabled:opacity-60"
       >
-        {isSubmitting ? 'Входим...' : flow === 'auth' ? 'Авторизоваться' : 'Войти'}
+        {isSubmitting ? (
+          <>
+            <Spinner className="size-4 text-white" />
+            {flow === 'auth' ? 'Входим…' : 'Создаём аккаунт…'}
+          </>
+        ) : flow === 'auth' ? (
+          'Авторизоваться'
+        ) : (
+          'Зарегистрироваться'
+        )}
       </button>
     </form>
   )
-}
-
-async function loginToFulfillmentApp(login: string, password: string) {
-  const response = await fetch(`${FULFILLMENT_API_BASE_URL}/auth/login`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ login, password }),
-  })
-
-  const data = (await response.json().catch(() => ({}))) as FulfillmentLoginResponse
-
-  if (!response.ok) {
-    throw new Error(getLoginErrorMessage(data.message, response.status))
-  }
-
-  if (!data.accessToken) {
-    throw new Error('Не удалось получить токен авторизации')
-  }
-
-  return data as FulfillmentLoginResponse & { accessToken: string }
-}
-
-function getLoginErrorMessage(message: string | undefined, status: number) {
-  if (message && message !== 'Internal Server Error' && message !== 'Internal server error') {
-    return message
-  }
-
-  if (status === 500) {
-    return 'Ошибка сервера. Попробуйте ещё раз или обратитесь в поддержку.'
-  }
-
-  return 'Неверный логин или пароль'
 }
 
 function RegisterLink({ className }: { className: string }) {
