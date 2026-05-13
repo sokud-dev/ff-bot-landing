@@ -24,7 +24,7 @@ const LEGAL_LINKS = {
   personalDataPolicy: '/documents/Политика_обработки_персональных_данных_v8.docx',
 } as const
 
-const MARKETPLACES = ['Wildberries', 'Ozon', 'Яндекс Маркет'] as const
+const MARKETPLACES = ['Wildberries', 'Ozon', 'ЯндексМаркет'] as const
 
 const ROUTE_STEPS = [
   'Оформление поставки',
@@ -50,32 +50,42 @@ export default function HomePage() {
 
           <div className="relative grid gap-8 p-6 sm:p-8 lg:grid-cols-[1.05fr_0.95fr] lg:p-12">
             <div className="flex flex-col justify-center gap-7 lg:pr-10 xl:pr-14">
-              <div className="inline-flex w-fit items-center gap-3 rounded-full bg-[#252064]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-[#252064]">
-                <span className="size-2 rounded-full bg-[#252064]" aria-hidden="true" />
-                Фулфилмент · B2B логистика
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-4 sm:gap-y-2">
+                <div className="inline-flex w-fit items-center gap-3 rounded-full bg-[#252064]/10 px-4 py-2 text-xs font-bold uppercase tracking-[0.22em] text-[#252064]">
+                  <span className="size-2 rounded-full bg-[#252064]" aria-hidden="true" />
+                  Фулфилмент · B2B логистика
+                </div>
+                <a
+                  href="tel:+74956400102"
+                  className="inline-flex w-fit items-center gap-2 rounded-full border border-[#252064]/20 bg-white px-4 py-2 text-xs font-bold text-[#252064] transition hover:border-[#252064]/40 hover:bg-[#252064]/5 sm:text-sm"
+                >
+                  <Phone className="size-4 shrink-0" aria-hidden="true" />
+                  +7 (495) 640-01-02
+                </a>
               </div>
               <div className="flex flex-col gap-4">
-                <h1 className="max-w-3xl text-balance text-4xl font-black leading-[0.98] tracking-tight text-[#252064] sm:text-6xl lg:text-7xl">
-                  Доставка до маркетплейсов
+                <h1 className="max-w-3xl text-balance text-3xl font-black leading-[0.98] tracking-tight text-[#252064] sm:text-5xl lg:text-6xl">
+                  Доставка до маркетплейсов —{' '}
+                  <span className="text-[#E4003C]">склад, маркировка и сроки под контролем</span>
                 </h1>
-                <p className="max-w-2xl text-pretty text-lg leading-relaxed text-[#252064] sm:text-xl lg:max-w-lg">
-                  Доставим ваши товары на Wildberries, Ozon, Яндекс Маркет в срок в два клика
+                <p className="max-w-2xl text-pretty text-base leading-relaxed text-[#252064] sm:text-lg lg:max-w-lg">
+                  Доставим ваши товары на Wildberries, Ozon, ЯндексМаркет в два клика
                 </p>
               </div>
-              <div className="flex flex-col gap-3 sm:flex-row">
+              <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
                   href="#login"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full bg-[#E4003C] px-6 text-sm font-bold text-white shadow-[0_12px_24px_rgba(228,0,60,0.28)] transition hover:bg-[#252064]"
+                  className="inline-flex h-12 w-fit items-center justify-center gap-2 rounded-full bg-[#E4003C] px-6 text-sm font-bold text-white shadow-[0_12px_24px_rgba(228,0,60,0.28)] transition hover:bg-[#252064]"
                 >
-                  Оформить заявку
+                  Сформировать поставку
                   <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
                 <a
-                  href="tel:+74956400102"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-full border border-[#252064]/20 bg-white px-6 text-sm font-bold text-[#252064] transition hover:border-[#252064]/40 hover:bg-[#252064]/5"
+                  href="#login"
+                  className="inline-flex h-12 w-fit items-center justify-center gap-2 rounded-full bg-[#252064] px-6 text-sm font-bold text-white shadow-[0_12px_24px_rgba(37,32,100,0.28)] transition hover:bg-[#1c1949]"
                 >
-                  <Phone className="size-4" aria-hidden="true" />
-                  +7 (495) 640-01-02
+                  Войти в ЛК
+                  <ArrowRight className="size-4" aria-hidden="true" />
                 </a>
               </div>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
@@ -101,31 +111,31 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="my-8 grid gap-4 sm:grid-cols-2">
+                <div className="my-8 grid gap-5 sm:grid-cols-2 sm:gap-6">
                   {ROUTE_STEPS.map((step, index) => (
                     <div
                       key={step}
-                      className={`relative rounded-2xl bg-white px-4 py-3.5 text-[#252064] shadow-sm ${
+                      className={`relative rounded-3xl bg-white px-5 py-5 text-[#252064] shadow-sm sm:px-6 sm:py-6 ${
                         index === 2 ? 'sm:col-start-2' : index === 3 ? 'sm:col-start-1 sm:row-start-2' : ''
                       }`}
                     >
-                      <div className="mb-2 flex items-center justify-between gap-3">
-                        <span className="text-[10px] font-black uppercase tracking-[0.16em] text-[#252064]/55">
+                      <div className="mb-3 flex items-center justify-between gap-3">
+                        <span className="text-xs font-black uppercase tracking-[0.16em] text-[#252064]/55">
                           Шаг {index + 1}
                         </span>
-                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#252064] text-sm font-black text-white">
+                        <span className="flex size-10 shrink-0 items-center justify-center rounded-full bg-[#252064] text-base font-black text-white sm:size-11 sm:text-lg">
                           {index + 1}
                         </span>
                       </div>
-                      <p className="text-sm font-black leading-snug">{step}</p>
+                      <p className="text-base font-black leading-snug sm:text-lg">{step}</p>
                       {index < ROUTE_STEPS.length - 1 ? (
                         <ArrowRight
-                          className={`absolute z-10 hidden size-5 rounded-full bg-[#252064] p-1 text-white shadow-md sm:block ${
+                          className={`absolute z-10 hidden size-6 rounded-full bg-[#252064] p-1 text-white shadow-md sm:block ${
                             index === 1
-                              ? '-bottom-3 left-1/2 -translate-x-1/2 rotate-90'
+                              ? '-bottom-3.5 left-1/2 -translate-x-1/2 rotate-90'
                               : index === 2
-                                ? 'left-[-1.1rem] top-1/2 -translate-y-1/2 rotate-180'
-                                : 'right-[-1.1rem] top-1/2 -translate-y-1/2'
+                                ? 'left-[-1.25rem] top-1/2 -translate-y-1/2 rotate-180'
+                                : 'right-[-1.25rem] top-1/2 -translate-y-1/2'
                           }`}
                           aria-hidden="true"
                         />
@@ -179,7 +189,7 @@ export default function HomePage() {
           className="relative isolate flex flex-col items-center gap-6 overflow-hidden rounded-[2rem] bg-white p-6 text-[#252064] shadow-[0_18px_50px_rgba(37,32,100,0.1)] sm:p-8"
         >
           <h2 className="relative text-center text-3xl font-black tracking-tight text-[#252064] sm:text-5xl">
-            Оформи заявку прямо сейчас!
+            Сформируй поставку прямо сейчас!
           </h2>
           <div className="relative grid w-full max-w-6xl items-center gap-6 lg:grid-cols-[0.65fr_1.35fr]">
             <div className="relative min-h-[220px] overflow-hidden rounded-3xl border border-[#252064]/12 bg-[#252064]/[0.04] shadow-sm sm:min-h-[280px] lg:h-full">
@@ -346,12 +356,16 @@ function FeatureIllustration({ type }: { type: 'calculator' | 'cycle' | 'payment
 function MarketplaceCard({ title }: { title: string }) {
   const isWildberries = title === 'Wildberries'
   const isOzon = title === 'Ozon'
-  const isYandexMarket = title === 'Яндекс Маркет'
+  const isYandexMarket = title === 'ЯндексМаркет'
   const displayTitle = isOzon ? 'OZON' : title
 
   return (
-    <div className="rounded-2xl border border-[#252064]/15 bg-white p-4 shadow-sm transition hover:-translate-y-0.5 hover:border-[#252064]/40 hover:shadow-md">
-      <div className="flex items-center gap-3">
+    <div
+      className={`min-w-0 rounded-2xl border border-[#252064]/15 bg-white shadow-sm transition hover:-translate-y-0.5 hover:border-[#252064]/40 hover:shadow-md ${
+        isYandexMarket ? 'p-3 sm:p-3.5' : 'p-4'
+      }`}
+    >
+      <div className={`flex min-w-0 items-center ${isYandexMarket ? 'gap-2' : 'gap-3'}`}>
         {isWildberries ? (
           <div
             className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#252064]/10 shadow-sm ring-1 ring-[#252064]/10"
@@ -368,15 +382,23 @@ function MarketplaceCard({ title }: { title: string }) {
           </div>
         ) : isYandexMarket ? (
           <div
-            className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#252064]/10 shadow-sm ring-1 ring-[#252064]/10"
+            className="flex size-9 shrink-0 items-center justify-center rounded-2xl bg-[#252064]/10 shadow-sm ring-1 ring-[#252064]/10 sm:size-10 md:size-12"
             aria-hidden="true"
           >
-            <Truck className="size-6 text-[#252064]" />
+            <Truck className="size-[18px] text-[#252064] sm:size-5 md:size-6" aria-hidden="true" />
           </div>
         ) : (
           <div className="h-1.5 w-12 shrink-0 rounded-full bg-[#252064]" aria-hidden="true" />
         )}
-        <p className="text-base font-black text-[#252064]">{displayTitle}</p>
+        <p
+          className={
+            isYandexMarket
+              ? 'min-w-0 whitespace-nowrap text-[11px] font-black leading-none tracking-tight text-[#252064] sm:text-xs md:text-sm lg:text-base'
+              : 'min-w-0 flex-1 break-words text-sm font-black leading-snug text-[#252064] sm:text-base'
+          }
+        >
+          {displayTitle}
+        </p>
       </div>
     </div>
   )
