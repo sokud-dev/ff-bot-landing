@@ -2,8 +2,7 @@
 
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Eye } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
-import { toast } from 'sonner'
+import { useSearchParams } from 'next/navigation'
 
 import { Spinner } from '@/components/ui/spinner'
 
@@ -22,51 +21,8 @@ type LoginFlow = 'auth' | 'registration'
 
 const LAST_LOGIN_STORAGE_KEY = 'ff_last_login'
 
-type AuthSuccess = {
-  success: true
-  token: string
-  user?: {
-    id: string
-    email: string
-    name?: string
-    role?: string
-  }
-}
-
-type AuthResponse = AuthSuccess | { success: false; error?: string }
-
 function isValidEmail(value: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())
-}
-
-async function postAuthJson(path: '/api/login' | '/api/register', body: Record<string, string>): Promise<AuthSuccess> {
-  let response: Response
-  try {
-    response = await fetch(path, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(body),
-    })
-  } catch (error) {
-    console.error('Auth request network error:', error)
-    throw new Error(
-      'Нет соединения с сервером. Запустите приложение командой npm run dev — запросы идут на тот же хост и порт, что и страница (относительные пути /api/login и /api/register).',
-    )
-  }
-
-  const data = (await response.json().catch(() => ({}))) as AuthResponse
-
-  if (data.success === true && data.token) {
-    return data
-  }
-
-  const message =
-    typeof data === 'object' && data && 'error' in data && typeof data.error === 'string' && data.error
-      ? data.error
-      : `Ошибка ${response.status}`
-
-  throw new Error(message)
 }
 
 export function LoginCard({ legalLinks }: LoginCardProps) {
@@ -162,13 +118,14 @@ function LoginMaskForm({
   onLoginChange: (event: ChangeEvent<HTMLInputElement>) => void
   onSwitchToAuth: () => void
 }) {
-  const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [submitNotice, setSubmitNotice] = useState('')
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setSubmitError('')
+    setSubmitNotice('')
 
     const formData = new FormData(event.currentTarget)
     const login = loginValue.trim()
@@ -204,32 +161,12 @@ function LoginMaskForm({
 
     setIsSubmitting(true)
 
-    try {
-      const authData =
-        flow === 'registration'
-          ? await postAuthJson('/api/register', {
-              email: login,
-              password,
-              name: String(formData.get('full_name') ?? '').trim(),
-            })
-          : await postAuthJson('/api/login', { email: login, password })
-
-      localStorage.setItem('token', authData.token)
-      localStorage.removeItem('refresh_token')
-      if (authData.user) {
-        localStorage.setItem('user', JSON.stringify(authData.user))
-      }
+    window.setTimeout(() => {
       localStorage.setItem(LAST_LOGIN_STORAGE_KEY, login)
 
-      toast.success(flow === 'auth' ? 'Вход выполнен' : 'Регистрация успешна')
-      router.push('/dashboard')
-    } catch (error) {
-      console.error('Auth submit error:', error)
-      const message = error instanceof Error ? error.message : 'Не удалось выполнить запрос'
-      setSubmitError(message)
-      toast.error(message)
+      setSubmitNotice('Static export: authentication is disabled.')
       setIsSubmitting(false)
-    }
+    }, 350)
   }
 
   const inputClassName =
@@ -387,6 +324,11 @@ function LoginMaskForm({
       {submitError ? (
         <div className="rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-sm text-red-700">
           {submitError}
+        </div>
+      ) : null}
+      {submitNotice ? (
+        <div className="rounded-xl border border-[#252064]/15 bg-[#252064]/[0.04] px-3.5 py-2.5 text-sm font-medium text-[#252064]/75">
+          {submitNotice}
         </div>
       ) : null}
       <button
