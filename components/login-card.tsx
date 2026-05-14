@@ -4,10 +4,10 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 
 import {
-  buildFulfillmentForgotPasswordUrl,
   buildFulfillmentLoginUrl,
   buildFulfillmentRegisterUrl,
-} from '@/lib/fulfillment-auth'
+  fulfillmentForgotPasswordUrl,
+} from '@/lib/fulfillment-urls'
 
 type LegalLinks = {
   joinAgreement: string
@@ -39,6 +39,17 @@ export function LoginCard({ legalLinks }: LoginCardProps) {
     }
   }, [searchParams])
 
+  useEffect(() => {
+    try {
+      const last = localStorage.getItem(LAST_LOGIN_STORAGE_KEY)
+      if (last && isValidEmail(last)) {
+        setLoginValue(last)
+      }
+    } catch {
+      /* ignore */
+    }
+  }, [])
+
   function handleLoginChange(event: ChangeEvent<HTMLInputElement>) {
     setLoginValue(event.target.value)
   }
@@ -51,8 +62,8 @@ export function LoginCard({ legalLinks }: LoginCardProps) {
       <h1 className="mb-1 text-xl font-black tracking-tight text-[#252064] sm:text-2xl">Вход в систему</h1>
       <p className="mb-6 text-sm text-[#252064]/65">
         {loginFlow === 'auth'
-          ? 'Введите email — пароль вводится на защищённой странице личного кабинета Fulfillment.'
-          : 'Заполните данные — регистрация завершается на защищённой странице личного кабинета.'}
+          ? 'Введите email — пароль запрашивается на защищённой странице платформы Fulfillment.'
+          : 'Заполните данные — регистрация продолжается на платформе Fulfillment.'}
       </p>
       <LoginFlowToggle activeFlow={loginFlow} onChange={setLoginFlow} className="mb-8" />
       <LoginMaskForm
@@ -125,6 +136,7 @@ function LoginMaskForm({
   onLoginChange: (event: ChangeEvent<HTMLInputElement>) => void
   onSwitchToAuth: () => void
 }) {
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -150,23 +162,32 @@ function LoginMaskForm({
         setSubmitError('Введите имя')
         return
       }
+    }
+
+    setIsSubmitting(true)
+
+    try {
       localStorage.setItem(LAST_LOGIN_STORAGE_KEY, login)
-      const url = buildFulfillmentRegisterUrl({ email: login, fullName: name, returnPath: '/dashboard' })
-      window.location.assign(url)
+    } catch {
+      /* ignore */
+    }
+
+    const returnPath = '/auth/callback'
+
+    if (flow === 'auth') {
+      window.location.assign(buildFulfillmentLoginUrl({ email: login, returnPath }))
       return
     }
 
-    localStorage.setItem(LAST_LOGIN_STORAGE_KEY, login)
-    const url = buildFulfillmentLoginUrl({ email: login, returnPath: '/dashboard' })
-    window.location.assign(url)
+    const name = String(formData.get('full_name') ?? '').trim()
+    window.location.assign(buildFulfillmentRegisterUrl({ email: login, name, returnPath }))
   }
 
   const inputClassName =
     'h-11 w-full rounded-xl border border-[#252064]/15 bg-white px-3.5 text-sm text-[#252064] outline-none transition-all placeholder:text-[#252064]/35 focus:border-[#E4003C] focus:ring-2 focus:ring-[#E4003C]/15'
 
   return (
-    <form autoComplete="off" className="flex flex-col gap-4" onSubmit={handleSubmit}>
-      <input type="text" style={{ display: 'none' }} readOnly name="fake_user" />
+    <form autoComplete="on" className="flex flex-col gap-4" onSubmit={handleSubmit}>
       <div>
         <label className="mb-1.5 block text-[10.5px] font-bold uppercase tracking-widest text-[#252064]/55">
           Email
@@ -197,12 +218,19 @@ function LoginMaskForm({
             required
           />
         </div>
-      ) : null}
+      ) : (
+        <p className="text-xs leading-relaxed text-[#252064]/55">
+          После нажатия «Авторизоваться» откроется{' '}
+          <span className="font-semibold text-[#252064]/75">fulfillment-web-production</span> — введите пароль там.
+        </p>
+      )}
       {flow === 'auth' ? (
         <div className="flex justify-end">
           <a
             className="text-xs font-semibold text-[#E4003C] underline-offset-4 hover:underline"
-            href={buildFulfillmentForgotPasswordUrl()}
+            href={fulfillmentForgotPasswordUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
           >
             Забыли пароль?
           </a>
@@ -293,16 +321,23 @@ function LoginMaskForm({
       ) : null}
       <button
         type="submit"
+        disabled={isSubmitting}
         className="mt-1 flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-[#E4003C] text-sm font-bold text-white shadow-[0_12px_24px_rgba(228,0,60,0.22)] transition-opacity hover:bg-[#252064] disabled:opacity-60"
       >
-        {flow === 'auth' ? 'Перейти ко входу' : 'Перейти к регистрации'}
+        {isSubmitting
+          ? flow === 'auth'
+            ? 'Переход…'
+            : 'Переход к регистрации…'
+          : flow === 'auth'
+            ? 'Авторизоваться'
+            : 'Зарегистрироваться на платформе'}
       </button>
     </form>
   )
 }
 
 function RegisterLink({ className }: { className: string }) {
-  const href = buildFulfillmentRegisterUrl({ returnPath: '/dashboard' })
+  const href = buildFulfillmentRegisterUrl({ returnPath: '/auth/callback' })
   return (
     <p className={`${className} text-center text-sm text-[#252064]/65`}>
       Нет аккаунта?{' '}
