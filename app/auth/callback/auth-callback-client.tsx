@@ -3,11 +3,10 @@
 import { Suspense, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
-function readTokenFromHash(): string | null {
-  if (typeof window === 'undefined') return null
+function readParamsFromHash(): URLSearchParams {
+  if (typeof window === 'undefined') return new URLSearchParams()
   const raw = window.location.hash.startsWith('#') ? window.location.hash.slice(1) : window.location.hash
-  const params = new URLSearchParams(raw)
-  return params.get('access_token') || params.get('token') || params.get('id_token')
+  return new URLSearchParams(raw)
 }
 
 function AuthCallbackInner() {
@@ -16,13 +15,28 @@ function AuthCallbackInner() {
   const [message, setMessage] = useState('Завершение входа…')
 
   useEffect(() => {
+    const hp = readParamsFromHash()
     const fromQuery =
       searchParams.get('token') || searchParams.get('access_token') || searchParams.get('id_token')
-    const fromHash = readTokenFromHash()
+    const fromHash = hp.get('access_token') || hp.get('token') || hp.get('id_token')
     const token = fromQuery || fromHash
 
     if (token) {
       localStorage.setItem('token', token)
+      const refresh =
+        searchParams.get('refresh_token') || hp.get('refresh_token')
+      if (refresh) {
+        localStorage.setItem('refresh_token', refresh)
+      }
+      const emailRaw = searchParams.get('email') || hp.get('email')
+      if (emailRaw) {
+        try {
+          const email = decodeURIComponent(emailRaw)
+          localStorage.setItem('user', JSON.stringify({ email }))
+        } catch {
+          localStorage.setItem('user', JSON.stringify({ email: emailRaw }))
+        }
+      }
       const err = searchParams.get('error_description') || searchParams.get('error')
       if (err) {
         localStorage.setItem('auth_error', err)

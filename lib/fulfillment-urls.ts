@@ -1,13 +1,14 @@
 /**
  * Связка лендинга и веб‑приложения Fulfillment (разные origin на Railway).
  *
- * Лендинг не может читать httpOnly‑куки платформы — после входа Fulfillment должен
- * вернуть пользователя на лендинг с токеном, например:
- *   GET {SITE}/auth/callback?token=<jwt>
- * или фрагмент: #access_token=<jwt>
+ * Ожидаемое поведение на стороне Fulfillment (allowlist origin + редирект после входа):
+ * - GET /login: query `return_url` (абсолютный URL лендинга), опционально `email`.
+ * - GET /register: то же + опционально `full_name`.
+ * После успеха — редирект на `return_url` с токенами, например:
+ *   ?access_token=…&refresh_token=…  или  #access_token=…
+ * (допустим алиас `token` вместо `access_token`).
  *
- * Параметр returnUrl на стороне Fulfillment должен быть разрешён (allowlist)
- * и подставляться в редирект после успешного входа/регистрации.
+ * Дополнительно дублируем `returnUrl` (camelCase), если на платформе так принято.
  */
 
 const DEFAULT_FULFILLMENT_ORIGIN = 'https://fulfillment-web-production.up.railway.app'
@@ -32,11 +33,13 @@ function absoluteReturnUrl(returnPath: string): string {
   return `${getSiteOriginForAuth()}${path}`
 }
 
-/** Реальный вход на платформе. Добавьте allowlist для returnUrl в Fulfillment. */
+/** Реальный вход на платформе. */
 export function buildFulfillmentLoginUrl(options: { email?: string; returnPath?: string } = {}): string {
   const returnPath = options.returnPath ?? '/auth/callback'
+  const ret = absoluteReturnUrl(returnPath)
   const u = new URL(`${getFulfillmentOrigin()}/login`)
-  u.searchParams.set('returnUrl', absoluteReturnUrl(returnPath))
+  u.searchParams.set('return_url', ret)
+  u.searchParams.set('returnUrl', ret)
   const email = options.email?.trim()
   if (email) {
     u.searchParams.set('email', email)
@@ -50,12 +53,17 @@ export function buildFulfillmentRegisterUrl(options: {
   returnPath?: string
 } = {}): string {
   const returnPath = options.returnPath ?? '/auth/callback'
+  const ret = absoluteReturnUrl(returnPath)
   const u = new URL(`${getFulfillmentOrigin()}/register`)
-  u.searchParams.set('returnUrl', absoluteReturnUrl(returnPath))
+  u.searchParams.set('return_url', ret)
+  u.searchParams.set('returnUrl', ret)
   const email = options.email?.trim()
   if (email) u.searchParams.set('email', email)
   const name = options.name?.trim()
-  if (name) u.searchParams.set('name', name)
+  if (name) {
+    u.searchParams.set('full_name', name)
+    u.searchParams.set('name', name)
+  }
   return u.toString()
 }
 
