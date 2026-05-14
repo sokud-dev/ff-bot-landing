@@ -5,6 +5,7 @@ server {
   root /usr/share/nginx/html;
   index index.html;
 
+  # Хэшированные ассеты Next — можно кэшировать надолго.
   location /_next/static/ {
     add_header Cache-Control "public, max-age=31536000, immutable";
     try_files $uri =404;
@@ -15,7 +16,10 @@ server {
     try_files $uri =404;
   }
 
+  # Не отдаём HTML и прочие страницы из "корня" с долгим кэшем — иначе после деплоя
+  # остаётся старый index.html со ссылками на старые чанки.
   location / {
+    add_header Cache-Control "no-cache, must-revalidate" always;
     try_files $uri $uri.html $uri/ =404;
   }
 }
