@@ -62,8 +62,8 @@ export function LoginCard({ legalLinks }: LoginCardProps) {
       <h1 className="mb-1 text-xl font-black tracking-tight text-[#252064] sm:text-2xl">Вход в систему</h1>
       <p className="mb-6 text-sm text-[#252064]/65">
         {loginFlow === 'auth'
-          ? 'Введите email — пароль запрашивается на защищённой странице платформы Fulfillment.'
-          : 'Заполните данные — регистрация продолжается на платформе Fulfillment.'}
+          ? 'Введите email и перейдите в приложение Fulfillment — пароль вводится уже там.'
+          : 'Заполните данные и перейдите в приложение Fulfillment для завершения регистрации.'}
       </p>
       <LoginFlowToggle activeFlow={loginFlow} onChange={setLoginFlow} className="mb-8" />
       <LoginMaskForm
@@ -172,15 +172,13 @@ function LoginMaskForm({
       /* ignore */
     }
 
-    const returnPath = '/auth/callback'
-
     if (flow === 'auth') {
-      window.location.assign(buildFulfillmentLoginUrl({ email: login, returnPath }))
+      window.location.assign(buildFulfillmentLoginUrl({ email: login }))
       return
     }
 
     const name = String(formData.get('full_name') ?? '').trim()
-    window.location.assign(buildFulfillmentRegisterUrl({ email: login, name, returnPath }))
+    window.location.assign(buildFulfillmentRegisterUrl({ email: login, name }))
   }
 
   const inputClassName =
@@ -220,8 +218,7 @@ function LoginMaskForm({
         </div>
       ) : (
         <p className="text-xs leading-relaxed text-[#252064]/55">
-          После нажатия «Авторизоваться» откроется{' '}
-          <span className="font-semibold text-[#252064]/75">fulfillment-web-production</span> — введите пароль там.
+          После «Авторизоваться» вы попадёте в приложение Fulfillment и введёте пароль там.
         </p>
       )}
       {flow === 'auth' ? (
@@ -337,7 +334,7 @@ function LoginMaskForm({
 }
 
 function RegisterLink({ className }: { className: string }) {
-  const href = buildFulfillmentRegisterUrl({ returnPath: '/auth/callback' })
+  const href = buildFulfillmentRegisterUrl()
   return (
     <p className={`${className} text-center text-sm text-[#252064]/65`}>
       Нет аккаунта?{' '}
