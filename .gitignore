@@ -19,3 +19,6 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 .vercel
+
+# TypeScript incremental
+tsconfig.tsbuildinfo

@@ -4,6 +4,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
 import { ffLogin, ffRegister } from '@/lib/ff-auth-api'
+import { setOnboardingPendingAfterRegister } from '@/lib/fulfillment-onboarding'
 import { fulfillmentForgotPasswordUrl } from '@/lib/fulfillment-urls'
 import { Spinner } from '@/components/ui/spinner'
 
@@ -206,10 +207,11 @@ function LoginMaskForm({
       setSubmitError(result.message)
       return
     }
+    setOnboardingPendingAfterRegister()
     try {
       const t = localStorage.getItem('token')
       if (t) {
-        router.push('/dashboard')
+        router.push('/o-servise')
         return
       }
     } catch {
